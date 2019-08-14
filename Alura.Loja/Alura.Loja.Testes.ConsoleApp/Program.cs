@@ -1,65 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Alura.Loja.Testes.ConsoleApp
+﻿namespace Alura.Loja.Testes.ConsoleApp
 {
     class Program
     {
         static void Main(string[] args)
         {
-            GravarUsandoEntity();
-            Update();
-            Delete();
-            Select();
-        }
-
-        private static void Select()
-        {
-            using (var contexto = new ProdutoDaoEntity())
+            var produto = new Produto
             {
-                IList<Produto> produtos = contexto.Produtos();
-                Console.WriteLine("Foram encontrados {0} produto(s).", produtos.Count);
-                foreach (var item in produtos)
-                {
-                    Console.WriteLine(item.Nome);
-                }
-            }
-        }
+                Nome = "Pão de trigo",
+                Categoria = "Padaria",
+                PrecoUnitario = 0.4,
+                Unidade = "Unidade"
+            };
 
-        private static void Delete()
-        {
-            using (var contexto = new ProdutoDaoEntity())
+            var compras = new Compra()
             {
-                IList<Produto> produtos = contexto.Produtos();
-                foreach (var item in produtos)
-                {
-                    contexto.Remover(item);
-                }
-            }
-        }
+                Produto = produto,
+                Quantidade = 6,
+                Preco = 6 * produto.PrecoUnitario
+            };
 
-        private static void Update()
-        {
-            using (var repo = new ProdutoDaoEntity())
+            using (var contexto = new LojaContext())
             {
-                Produto primeiro = repo.Produtos().First();
-                primeiro.Nome = "Cassino Royale - Editado";
-                repo.Atualizar(primeiro);
-            }
-            Select();
-        }
+                contexto.Compras.Add(compras);
 
-        private static void GravarUsandoEntity()
-        {
-            Produto p = new Produto();
-            p.Nome = "Harry Potter e a Ordem da Fênix";
-            p.Categoria = "Livros";
-            p.PrecoUnitario = 19.89;
-
-            using (var contexto = new ProdutoDaoEntity())
-            {
-                contexto.Adicionar(p);
+                contexto.SaveChanges();
             }
         }
     }
