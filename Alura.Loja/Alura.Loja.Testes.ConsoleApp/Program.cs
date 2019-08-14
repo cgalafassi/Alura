@@ -1,4 +1,6 @@
-﻿namespace Alura.Loja.Testes.ConsoleApp
+﻿using System;
+
+namespace Alura.Loja.Testes.ConsoleApp
 {
     class Program
     {
@@ -19,11 +21,19 @@
                 Preco = 6 * produto.PrecoUnitario
             };
 
+            var promocao = new Promocao()
+            {
+                Nome = "Pascoa legal",
+                DataInicio = DateTime.Now,
+                DataFim = DateTime.Now.AddMonths(2)
+            };
+
+
+
             using (var contexto = new LojaContext())
             {
-                contexto.Compras.Add(compras);
 
-                contexto.SaveChanges();
+
             }
         }
     }
