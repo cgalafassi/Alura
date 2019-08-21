@@ -6,6 +6,6 @@ class View {
         this._elemento.innerHTML = this.template(model);
     }
     template(model) {
-        return `<p class="alert alert-info">${model}</p>`;
+        throw new Error('Você deve implementar o método template');
     }
 }
