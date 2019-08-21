@@ -1,5 +1,7 @@
 import { NegociacoesView, MensagemView } from '../views/index';
 import { Negociacoes, Negociacao } from '../models/index';
+import { logarTempoDeExecucao } from '../helpers/decorators/index';
+
 
 export class NegociacaoController {
 
@@ -17,7 +19,8 @@ export class NegociacaoController {
         this._inputValor = $('#valor');
         this._negociacoesView.update(this._negociacoes);
     }
-
+    
+    @logarTempoDeExecucao()
     adiciona(event: Event) {
 
         event.preventDefault();
@@ -29,7 +32,7 @@ export class NegociacaoController {
             this._mensagemView.update('Somente negociações em dias úteis, por favor!');
             return
         }
-        
+
         const negociacaoNew = new Negociacao(
             new Date(this._inputData.val().replace(/-/g, ',')),
             parseInt(this._inputQuantidade.val()),
