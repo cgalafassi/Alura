@@ -54,26 +54,20 @@ export class NegociacaoController {
 
         return data.getDay() != DiaDaSemana.Sabado && data.getDay() != DiaDaSemana.Domingo;
     }
-
+    
     @throttle()
-    importarDados() {
-
-        function isOK(res: Response) {
-
-            if (res.ok) {
-                return res;
-            } else {
-                throw new Error(res.statusText);
-            }
-        }
+    importaDados() {
 
         this._service
-            .obterNegociacoes(isOK)
+            .obterNegociacoes(res => {
+                if(res.ok) return res;
+                throw new Error(res.statusText);
+            })
             .then(negociacoes => {
                 negociacoes.forEach(negociacao => 
                     this._negociacoes.adiciona(negociacao));
                 this._negociacoesView.update(this._negociacoes);
-            });       
+            });
 
     }
 }
