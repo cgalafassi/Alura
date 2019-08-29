@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Alura.ListaLeitura.App
@@ -23,9 +24,19 @@ namespace Alura.ListaLeitura.App
             routeBuilder.MapRoute("livros/lendo", LivrosLendo);
             routeBuilder.MapRoute("livros/lidos", LivrosLidos);
             routeBuilder.MapRoute("cadastro/novolivro/{nome}/{autor}", CadastroNovoLivro);
+            routeBuilder.MapRoute("livros/detalhes/{id}", LivrosDetalhes);
             var rotas = routeBuilder.Build();
 
             app.UseRouter(rotas);
+        }
+
+        private Task LivrosDetalhes(HttpContext context)
+        {
+            var id = Convert.ToInt32(context.GetRouteValue("id"));
+            var _repo = new LivroRepositorioCSV();
+            var livro = _repo.Todos.First(x => x.Id.Equals(id));
+
+            return context.Response.WriteAsync(livro.Detalhes());
         }
 
         public Task CadastroNovoLivro(HttpContext context)
