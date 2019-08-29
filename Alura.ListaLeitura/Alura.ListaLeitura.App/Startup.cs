@@ -28,6 +28,7 @@ namespace Alura.ListaLeitura.App
                     .WriteAsync(caminhosAtendidos[context.Request.Path]);
             }
 
+            context.Response.StatusCode = 404;
             return context.Response.WriteAsync("Caminho inexistente.");
         }
 
